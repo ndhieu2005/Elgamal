@@ -1,5 +1,6 @@
+% !TEX program = pdflatex
 % =================== CÀI ĐẶT CHUNG ===================
-\documentclass[a4paper, twoside]{report}
+\documentclass[a4paper, oneside]{report}
 %\documentclass[a4paper, 13pt, twoside]{extreport} % Bằng một cách thần kỳ nào đấy, thuật toán co giãn của lệnh này lại nhỏ hơn lệnh changefontsizes 
 % (*) 'a4paper': Quy định khổ giấy A4.
 % (*) '13pt': Cỡ chữ cơ bản cho toàn văn bản là 13pt.
@@ -17,7 +18,7 @@
 	\renewcommand{\headrulewidth}{0pt} % Điều chỉnh độ dày của đương kẻ ngang header, ở đây mục đích là bỏ đường kẻ ngang ở header (Độ dày 0pt)
 	\renewcommand{\footrulewidth}{0pt}} % Điều chỉnh độ dày của đương kẻ ngang footer, ở đây mục đích là bỏ đường kẻ ngang ở footer (Độ dày 0pt)
 % Lệnh trên để tùy chỉnh lại định dạng trang 'plain' (thường dùng cho trang đầu chương).
-\setlength{\headheight}{15pt} % Đặt chiều cao cho vùng header để tránh lỗi cảnh báo của fancyhdr.
+\setlength{\headheight}{18pt} % Đặt chiều cao cho vùng header để tránh lỗi cảnh báo của fancyhdr.
 
 \usepackage{pdflscape} % Hỗ trợ trang ngang, giúp đưa các bảng có kích thước đặt theo chiều ngang giấy
 \usepackage{setspace} % Hỗ trợ giãn dòng
@@ -29,6 +30,7 @@
 \usepackage{graphicx} %Cho phép chèn hình ảnh với lệnh \includegraphics.
 \graphicspath{{figures/}{../figures/}} % Thư mục chứa các hình ảnh, tùy chọn đường dẫn dựa vào người dùng
 \usepackage{array} % Tạo bảng, mở rộng khả năng tùy biến các cột trong môi trường bảng (tabular).
+\usepackage{booktabs} % Đường kẻ ngang chuyên nghiệp trong bảng (\toprule, \midrule, \bottomrule).
 \usepackage{multirow} % Hợp nhất các ô trong bảng.
 \usepackage{subcaption} % Hỗ trợ tạo các hình ảnh/bảng con trong cùng một môi trường figure/table.
 \usepackage{float} % Cung cấp tùy chọn [H] để "ghim" đối tượng (hình, bảng) tại đúng vị trí khai báo.
@@ -43,11 +45,25 @@
 \usepackage{amsmath} % Hỗ trợ nhiều môi trường và lệnh để soạn thảo công thức toán học phức tạp.
 \usepackage{amssymb} % Bổ sung thêm kí hiệu về toán học (ví dụ: \mathbb).
 \usepackage{amsthm} % Cho phép tạo môi trường định lý, ví dụ
-\theoremstyle{definition} %Định dạng: Tiêu đề in đậm, nội dung in đứng, dành cho các phần mang tính giải thích, không phải chứng minh, như Định nghĩa (Definition), Điều kiện (Condition), và Ví dụ (Example). Có thể tùy chỉnh thành \theoremstyle{plain}, \theoremstyle{remark}. Tuy nhiên sử dụng trong quy cách đồ án sử dụng definition.
-\newtheorem{example}{Ví dụ}[chapter] % Tạo môi trường "Ví dụ", được đánh số theo chương.
+\theoremstyle{plain}
+\newtheorem{theorem}{Định lý}[chapter]
+\newtheorem{lemma}[theorem]{Bổ đề}
+\newtheorem{corollary}[theorem]{Hệ quả}
+\newtheorem{proposition}[theorem]{Mệnh đề}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Định nghĩa}
+\newtheorem{example}[theorem]{Ví dụ}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Nhận xét}
+\renewcommand\proofname{Chứng minh}
 \counterwithin{equation}{chapter} % Đánh số phương trình theo chương
 \renewcommand{\theequation}{PT \thechapter.\arabic{equation}} % Đổi định dạng số phương trình (ví dụ: "PT 1.1").
 \usepackage[ruled,vlined]{algorithm2e} % Hỗ trợ viết các giải thuật, mã giả (pseudocode).
+\renewcommand{\algorithmcfname}{Thuật toán}
+\counterwithin{algocf}{chapter}
+\SetKwInput{KwIn}{Đầu vào}
+\SetKwInput{KwOut}{Đầu ra}
+\SetKw{Return}{trả về}
 
 % =================== GÓI LỆNH NGÔN NGỮ & FONT ===================
 \usepackage[utf8]{vietnam}  % Kích hoạt bộ gõ tiếng Việt và các quy tắc soạn thảo tiếng Việt.

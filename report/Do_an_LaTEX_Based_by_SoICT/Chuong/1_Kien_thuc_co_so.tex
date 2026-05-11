@@ -1,36 +1,421 @@
 \documentclass[../DoAn.tex]{subfiles}
 \begin{document}
 
+% ===================================================================
 \section{Lý thuyết số và đại số trừu tượng}
-\label{section:1.1}
+\label{sec:number-theory}
 
 \subsection{Số nguyên tố và phép đồng dư}
-\label{section:1.1.1}
-\textit{[TODO: Trình bày định nghĩa số nguyên tố, định lý cơ bản của số học, phép đồng dư $a \equiv b \pmod{n}$, vành $\mathbb{Z}_n$ và các tính chất liên quan.]}
+\label{subsec:primes-modular}
 
+\subsubsection{Số nguyên tố và định lý cơ bản của số học}
+
+\begin{definition}[Số nguyên tố]
+Số nguyên tố là số nguyên dương $p > 1$ chỉ có đúng hai ước dương là $1$ và chính nó. Tập các số nguyên tố ký hiệu là $\mathbb{P}$.
+\end{definition}
+
+\begin{theorem}[Euclid]
+Tập các số nguyên tố là vô hạn.
+\end{theorem}
+
+\begin{theorem}[Định lý cơ bản của số học]
+Mọi số nguyên $n > 1$ đều có duy nhất một cách viết dưới dạng
+\[
+	n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r},
+\]
+trong đó $p_1 < p_2 < \cdots < p_r$ là các số nguyên tố và $e_i \in \mathbb{N}^*$.
+\end{theorem}
+
+Trong mật mã, ta đặc biệt quan tâm đến các số nguyên tố \emph{lớn} --- thường có độ dài từ $2048$ bit trở lên --- vì chúng tạo nên nền tảng cho các bài toán khó như phân tích thừa số nguyên (RSA) và logarit rời rạc (ElGamal, DSA, ECDSA).
+
+\subsubsection{Phép chia có dư và phép đồng dư}
+
+\begin{theorem}[Phép chia có dư]
+Với mọi $a \in \mathbb{Z}$ và $n \in \mathbb{Z}^+$, tồn tại duy nhất cặp số nguyên $(q, r)$ sao cho
+\[
+	a = qn + r, \quad 0 \leq r < n.
+\]
+Ta gọi $q$ là \emph{thương}, $r$ là \emph{số dư}, ký hiệu $r = a \bmod n$.
+\end{theorem}
+
+\begin{definition}[Đồng dư]
+Hai số nguyên $a, b$ được gọi là \emph{đồng dư} modulo $n$, ký hiệu $a \equiv b \pmod{n}$, nếu $n \mid (a - b)$, tức $a$ và $b$ có cùng số dư khi chia cho $n$.
+\end{definition}
+
+\begin{proposition}[Tính chất cơ bản của đồng dư]
+Phép đồng dư là một quan hệ tương đương trên $\mathbb{Z}$ và tương thích với các phép toán cộng, trừ, nhân. Cụ thể, nếu $a \equiv b \pmod{n}$ và $c \equiv d \pmod{n}$ thì:
+\begin{enumerate}
+	\item $a \pm c \equiv b \pm d \pmod{n}$,
+	\item $ac \equiv bd \pmod{n}$,
+	\item $a^k \equiv b^k \pmod{n}$ với mọi $k \in \mathbb{N}$.
+\end{enumerate}
+\end{proposition}
+
+Tính chất này cho phép thực hiện toàn bộ các phép tính của ElGamal trong tập hữu hạn $\{0, 1, \ldots, p-1\}$ --- không bao giờ bị tràn số dù $p$ có cỡ $2048$ bit hay lớn hơn.
+
+Tập các lớp tương đương modulo $n$ cùng phép cộng và phép nhân tạo thành \emph{vành thương} $\mathbb{Z}/n\mathbb{Z}$, ký hiệu tắt là $\mathbb{Z}_n$. Tập các phần tử khả nghịch (đối với phép nhân) của $\mathbb{Z}_n$ ký hiệu là $\mathbb{Z}_n^*$.
+
+\subsubsection{Định lý Fermat nhỏ và định lý Euler}
+
+\begin{theorem}[Fermat nhỏ]
+\label{thm:fermat}
+Cho $p$ là số nguyên tố và $a \in \mathbb{Z}$ với $\gcd(a, p) = 1$. Khi đó
+\[
+	a^{p-1} \equiv 1 \pmod{p}.
+\]
+Hệ quả: với mọi $a \in \mathbb{Z}$, ta có $a^{p} \equiv a \pmod{p}$.
+\end{theorem}
+
+\begin{definition}[Hàm Euler $\varphi$]
+Hàm Euler $\varphi: \mathbb{Z}^+ \to \mathbb{Z}^+$ đếm số các số nguyên trong $\{1, 2, \ldots, n\}$ nguyên tố cùng nhau với $n$:
+\[
+	\varphi(n) = |\{a : 1 \leq a \leq n,\ \gcd(a, n) = 1\}|.
+\]
+Đặc biệt, $\varphi(p) = p - 1$ khi $p$ là số nguyên tố.
+\end{definition}
+
+\begin{theorem}[Euler]
+Với mọi $n \in \mathbb{Z}^+$ và $a \in \mathbb{Z}$ thỏa $\gcd(a, n) = 1$:
+\[
+	a^{\varphi(n)} \equiv 1 \pmod{n}.
+\]
+\end{theorem}
+
+Định lý Fermat nhỏ đóng vai trò then chốt trong bộ công cụ mật mã:
+\begin{itemize}[leftmargin=*]
+	\item Cho phép tính nghịch đảo nhanh \emph{khi modulo là số nguyên tố}: $a^{-1} \equiv a^{p-2} \pmod{p}$.
+	\item Là cơ sở cho các thuật toán kiểm tra tính nguyên tố xác suất như Fermat test, Miller--Rabin --- được dùng để sinh các số nguyên tố lớn trong giai đoạn KeyGen của ElGamal.
+	\item Là nền tảng để chứng minh tính đúng đắn của lược đồ chữ ký ElGamal: lũy thừa trên $\mathbb{Z}_p^*$ chỉ phụ thuộc vào số mũ modulo $p-1$.
+\end{itemize}
+
+\subsubsection{Nghịch đảo modular và thuật toán Euclid mở rộng}
+
+\begin{definition}[Nghịch đảo modular]
+Nghịch đảo modular của $a$ theo modulo $n$ là số nguyên $a^{-1}$ thỏa mãn $a \cdot a^{-1} \equiv 1 \pmod{n}$.
+\end{definition}
+
+\begin{theorem}
+Nghịch đảo modular của $a$ modulo $n$ tồn tại khi và chỉ khi $\gcd(a, n) = 1$.
+\end{theorem}
+
+Thuật toán Euclid mở rộng (Extended Euclidean Algorithm) tính đồng thời $\gcd(a, n)$ và các \emph{hệ số Bézout} $(u, v) \in \mathbb{Z}^2$ thỏa mãn $au + nv = \gcd(a, n)$. Khi $\gcd(a, n) = 1$, ta có $a^{-1} \equiv u \pmod{n}$.
+
+\begin{algorithm}[H]
+\caption{Thuật toán Euclid mở rộng}
+\label{alg:extgcd}
+\KwIn{$a, n \in \mathbb{Z}^+$}
+\KwOut{$(d, u, v)$ với $d = \gcd(a, n)$ và $au + nv = d$}
+$(r_0, r_1) \gets (a, n)$\;
+$(u_0, u_1) \gets (1, 0)$\;
+$(v_0, v_1) \gets (0, 1)$\;
+\While{$r_1 \neq 0$}{
+	$q \gets \lfloor r_0 / r_1 \rfloor$\;
+	$(r_0, r_1) \gets (r_1,\; r_0 - q \cdot r_1)$\;
+	$(u_0, u_1) \gets (u_1,\; u_0 - q \cdot u_1)$\;
+	$(v_0, v_1) \gets (v_1,\; v_0 - q \cdot v_1)$\;
+}
+\Return{$(r_0, u_0, v_0)$}\;
+\end{algorithm}
+
+Độ phức tạp: $O(\log \min(a, n))$ phép chia, tổng cộng $O(k^3)$ bit-operation với $k = \log n$. Trong Python: \texttt{pow(a, -1, n)} (Python~3.8+) đã tích hợp sẵn.
+
+\begin{example}
+\label{ex:extgcd}
+Tính $7^{-1} \bmod 26$. Áp dụng thuật toán Euclid trên $26$ và $7$:
+\begin{align*}
+26 &= 3 \cdot 7 + 5, \quad
+7  = 1 \cdot 5 + 2, \quad
+5  = 2 \cdot 2 + 1, \quad
+2  = 2 \cdot 1 + 0.
+\end{align*}
+Quay ngược các hệ số Bézout: $1 = 5 - 2\cdot 2 = 3\cdot 5 - 2\cdot 7 = 3\cdot 26 - 11\cdot 7$.
+Vậy $7^{-1} \equiv -11 \equiv 15 \pmod{26}$.
+\end{example}
+
+\begin{remark}
+\label{rmk:euclid-elgamal}
+Trong lược đồ ElGamal, ta cần tính $k^{-1} \bmod (p-1)$ ở bước ký. Modulo ở đây là $p-1$ --- \emph{không nguyên tố} (vì $p-1$ luôn chẵn). Do đó \textbf{bắt buộc} phải dùng thuật toán Euclid mở rộng, không thể dùng công thức $a^{p-2}$ của Định lý~\ref{thm:fermat}. Đây là chi tiết cài đặt dễ bị nhầm khi mới làm quen với ElGamal.
+\end{remark}
+
+\subsubsection{Định lý số dư Trung Hoa}
+
+\begin{theorem}[Định lý số dư Trung Hoa --- CRT]
+Cho $n_1, n_2, \ldots, n_k$ là các số nguyên dương đôi một nguyên tố cùng nhau. Đặt $N = n_1 n_2 \cdots n_k$. Khi đó với mọi bộ số $(a_1, \ldots, a_k)$, hệ phương trình đồng dư $x \equiv a_i \pmod{n_i}$ có nghiệm duy nhất modulo $N$.
+\end{theorem}
+
+CRT cho phép phân rã các phép tính trên $\mathbb{Z}_N$ thành các phép tính song song trên các $\mathbb{Z}_{n_i}$ nhỏ hơn. Đây cũng là công cụ trong thuật toán Pohlig--Hellman tấn công DLP khi $p-1$ có các thừa số nhỏ --- điều giải thích vì sao phải chọn $p$ là \emph{safe prime} (xem Mục~\ref{subsubsec:safe-prime}).
+
+% ===================================================================
 \subsection{Nhóm hữu hạn và phần tử nguyên thủy}
-\label{section:1.1.2}
-\textit{[TODO: Định nghĩa nhóm cyclic hữu hạn $\mathbb{Z}_p^*$, bậc của phần tử, phần tử sinh (nguyên thủy). Nêu điều kiện tồn tại và cách xác định phần tử nguyên thủy modulo $p$.]}
+\label{subsec:groups}
 
+\subsubsection{Khái niệm nhóm và nhóm con}
+
+\begin{definition}[Nhóm]
+Một \emph{nhóm} là cặp $(G, \cdot)$ gồm tập $G \neq \emptyset$ và phép toán hai ngôi $\cdot : G \times G \to G$ thỏa mãn:
+\begin{enumerate}
+	\item \textbf{Kết hợp}: $(a \cdot b) \cdot c = a \cdot (b \cdot c)$ với mọi $a, b, c \in G$.
+	\item \textbf{Phần tử đơn vị}: tồn tại $e \in G$ sao cho $e \cdot a = a \cdot e = a$ với mọi $a \in G$.
+	\item \textbf{Phần tử nghịch đảo}: với mỗi $a \in G$, tồn tại $a^{-1} \in G$ sao cho $a \cdot a^{-1} = e$.
+\end{enumerate}
+Nhóm $(G, \cdot)$ được gọi là \emph{Abel} nếu $a \cdot b = b \cdot a$ với mọi $a, b \in G$. \emph{Cấp} của nhóm, ký hiệu $|G|$, là số phần tử của $G$.
+\end{definition}
+
+\begin{definition}[Nhóm con]
+Tập con $H \subseteq G$ được gọi là \emph{nhóm con} của $G$, ký hiệu $H \leq G$, nếu $H$ cùng phép toán hạn chế từ $G$ là một nhóm.
+\end{definition}
+
+\begin{theorem}[Lagrange]
+\label{thm:lagrange}
+Nếu $H$ là nhóm con của nhóm hữu hạn $G$ thì $|H|$ là ước của $|G|$.
+\end{theorem}
+
+Trong mật mã khóa công khai dựa trên DLP, ta luôn làm việc với các nhóm \emph{hữu hạn, Abel}.
+
+\subsubsection{Cấp của phần tử và nhóm cyclic}
+
+\begin{definition}[Cấp của phần tử]
+Cho nhóm $(G, \cdot)$ và $a \in G$. \emph{Cấp} của $a$, ký hiệu $\mathrm{ord}(a)$, là số nguyên dương nhỏ nhất $k$ sao cho $a^k = e$.
+\end{definition}
+
+\begin{corollary}
+Trong nhóm hữu hạn, $\mathrm{ord}(a) \mid |G|$ với mọi $a \in G$.
+\end{corollary}
+
+\begin{proof}
+Tập $\langle a \rangle = \{a^0, a^1, \ldots, a^{\mathrm{ord}(a)-1}\}$ là nhóm con của $G$ cấp $\mathrm{ord}(a)$. Áp dụng Định lý~\ref{thm:lagrange}.
+\end{proof}
+
+\begin{definition}[Nhóm cyclic]
+Nhóm $G$ được gọi là \emph{cyclic} nếu tồn tại phần tử $g \in G$ sao cho mọi phần tử của $G$ đều có dạng $g^k$ với $k \in \mathbb{Z}$. Phần tử $g$ được gọi là \emph{phần tử sinh} (generator), ta viết $G = \langle g \rangle$.
+\end{definition}
+
+\begin{theorem}[Cấu trúc nhóm cyclic]
+Mọi nhóm cyclic hữu hạn cấp $n$ đều đẳng cấu với $(\mathbb{Z}_n, +)$. Với mỗi ước $d$ của $n$, nhóm cyclic cấp $n$ có đúng \emph{một} nhóm con cấp $d$.
+\end{theorem}
+
+\subsubsection{Nhóm nhân \texorpdfstring{$\mathbb{Z}_p^*$}{Zp*}}
+
+Cho $p$ là số nguyên tố. Tập $\mathbb{Z}_p^* = \{1, 2, \ldots, p-1\}$ cùng với phép nhân modulo $p$ tạo thành một nhóm --- đây chính là cấu trúc đại số mà ElGamal hoạt động trên đó.
+
+\begin{theorem}[Gauss]
+\label{thm:zp-cyclic}
+Với $p$ nguyên tố, $\mathbb{Z}_p^*$ là nhóm cyclic cấp $p - 1$.
+\end{theorem}
+
+Hệ quả: tồn tại ít nhất một phần tử $g \in \mathbb{Z}_p^*$ sao cho $\mathbb{Z}_p^* = \{g^0, g^1, \ldots, g^{p-2}\}$.
+
+\subsubsection{Phần tử nguyên thủy}
+
+\begin{definition}[Phần tử nguyên thủy]
+Phần tử $g \in \mathbb{Z}_p^*$ được gọi là \emph{phần tử nguyên thủy} (primitive root, generator) modulo $p$ nếu $\mathrm{ord}(g) = p - 1$, tức $g$ sinh ra toàn bộ $\mathbb{Z}_p^*$.
+\end{definition}
+
+\begin{theorem}
+Số phần tử nguyên thủy modulo $p$ bằng $\varphi(p-1)$.
+\end{theorem}
+
+\paragraph{Cách kiểm tra phần tử nguyên thủy.}
+Cho $p - 1 = q_1^{e_1} \cdots q_r^{e_r}$. Phần tử $g$ là nguyên thủy modulo $p$ khi và chỉ khi $g^{(p-1)/q_i} \not\equiv 1 \pmod{p}$ với mọi $i = 1, \ldots, r$.
+
+\begin{example}[Phần tử nguyên thủy modulo $11$]
+\label{ex:primroot-11}
+Với $p = 11$, $p - 1 = 10 = 2 \cdot 5$. Kiểm tra $g = 2$:
+$2^5 = 32 \equiv 10 \not\equiv 1 \pmod{11}$ và $2^2 = 4 \not\equiv 1 \pmod{11}$. Vậy $g = 2$ là phần tử nguyên thủy. Các lũy thừa:
+\[
+\begin{array}{c|cccccccccc}
+i & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+\hline
+2^i \bmod 11 & 2 & 4 & 8 & 5 & 10 & 9 & 7 & 3 & 6 & 1
+\end{array}
+\]
+Sinh đủ $10$ phần tử của $\mathbb{Z}_{11}^*$. Số phần tử nguyên thủy modulo $11$ là $\varphi(10) = 4$, cụ thể là $\{2, 6, 7, 8\}$.
+\end{example}
+
+\subsubsection{Safe prime}
+\label{subsubsec:safe-prime}
+
+\begin{definition}[Safe prime]
+Số nguyên tố $p$ được gọi là \emph{safe prime} nếu $q = (p-1)/2$ cũng là số nguyên tố. Khi đó $q$ được gọi là số nguyên tố Sophie Germain.
+\end{definition}
+
+Trong thực hành mật mã, ta luôn chọn $p$ là safe prime vì ba lý do:
+\begin{enumerate}[leftmargin=*]
+	\item \textbf{Kiểm tra phần tử nguyên thủy cực nhanh.} $p - 1 = 2q$ chỉ có hai thừa số nguyên tố, chỉ cần kiểm tra $g^{(p-1)/2} \neq 1$ và $g^2 \neq 1$.
+	\item \textbf{Hầu như mọi phần tử đều có cấp lớn.} Cấp của phần tử là ước của $2q$, chỉ có thể là $1, 2, q, 2q$. Chỉ $g = 1$ có cấp $1$ và $g = p-1$ có cấp $2$; mọi phần tử còn lại có cấp $q$ hoặc $2q$.
+	\item \textbf{Chống tấn công Pohlig--Hellman.} Tấn công này khai thác các thừa số nhỏ của $p-1$ để giải DLP nhanh. Khi $p - 1 = 2q$ với $q$ nguyên tố lớn, không tồn tại nhóm con nhỏ để khai thác.
+\end{enumerate}
+
+% ===================================================================
 \subsection{Lũy thừa modular}
-\label{section:1.1.3}
-\textit{[TODO: Phép tính $a^k \bmod p$, thuật toán bình phương và nhân nhanh (fast exponentiation), độ phức tạp tính toán.]}
+\label{subsec:modexp}
 
-\section{Bài toán Logarit rời rạc (DLP)}
-\label{section:1.2}
+Bài toán tính $g^x \bmod p$ với $g, x, p$ lớn (cỡ vài nghìn bit) là phép toán cơ bản nhất trong mọi hệ mã khóa công khai dựa trên DLP, xuất hiện ở cả ba bước KeyGen, Sign và Verify của ElGamal.
+
+\subsubsection{Tại sao cần thuật toán hiệu quả}
+
+Tính trực tiếp $g^x$ rồi mới rút gọn modulo $p$ là \emph{không khả thi}: với $g, x$ cỡ $2048$ bit, giá trị $g^x$ có thể chứa tới $\sim 10^{619}$ chữ số --- vượt xa khả năng lưu trữ của mọi máy tính. Ý tưởng là rút gọn modulo $p$ \emph{sau mỗi phép nhân} và dùng biểu diễn nhị phân của số mũ để giảm số phép nhân từ $x$ xuống $O(\log x)$.
+
+\subsubsection{Thuật toán bình phương và nhân}
+
+\paragraph{Ý tưởng.}
+Biểu diễn $x = (b_{n-1} \ldots b_1 b_0)_2$. Khi đó $g^x = \prod_{i:\, b_i = 1} g^{2^i}$, và các $g^{2^i}$ được tính bằng bình phương liên tiếp, mỗi bước rút gọn modulo $p$.
+
+\begin{algorithm}[H]
+\caption{Lũy thừa modular --- bình phương và nhân}
+\label{alg:modexp}
+\KwIn{$g, x, p$ với $x \geq 0$, $p > 0$}
+\KwOut{$g^x \bmod p$}
+$\mathit{result} \gets 1$\;
+$\mathit{base} \gets g \bmod p$\;
+\While{$x > 0$}{
+	\If{$x$ lẻ}{
+		$\mathit{result} \gets \mathit{result} \cdot \mathit{base} \bmod p$\;
+	}
+	$x \gets \lfloor x / 2 \rfloor$\;
+	$\mathit{base} \gets \mathit{base}^2 \bmod p$\;
+}
+\Return{$\mathit{result}$}\;
+\end{algorithm}
+
+\paragraph{Phân tích độ phức tạp.}
+Số vòng lặp đúng bằng $\lfloor \log_2 x \rfloor + 1$, tổng số phép nhân không vượt $2\log_2 x$. Với $x$ cỡ $2048$ bit, chỉ cần khoảng $4000$ phép nhân --- hoàn toàn thực hiện được trong vài mili giây. Tổng độ phức tạp $O(\log^3 p)$ bit-operation. Trong Python: \texttt{pow(g, x, p)} đã cài đặt thuật toán này.
+
+\begin{example}
+\label{ex:modexp}
+Tính $3^{13} \bmod 17$. Ta có $13 = (1101)_2$, do đó $3^{13} = 3^8 \cdot 3^4 \cdot 3^1$.
+\[
+3^1 = 3,\quad 3^2 = 9,\quad 3^4 \equiv 13 \pmod{17},\quad 3^8 \equiv 16 \pmod{17}.
+\]
+Suy ra $3^{13} \equiv 16 \cdot 13 \cdot 3 = 624 \equiv 12 \pmod{17}$.
+\end{example}
+
+\subsubsection{Tính bất đối xứng --- nền tảng cho mật mã khóa công khai}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ll}
+\toprule
+\textbf{Chiều thuận} & $x \longmapsto y = g^x \bmod p$ là \emph{dễ}: $O(\log^3 p)$ bit-op. \\
+\textbf{Chiều ngược} & $(g, y, p) \longmapsto x$ (DLP) là \emph{khó}: dưới hàm mũ. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Tính bất đối xứng này chính là tính chất \emph{cửa sập một chiều} (one-way trapdoor) --- nền tảng của mật mã khóa công khai do Diffie và Hellman đề xuất năm 1976. Mục~\ref{sec:dlp} tiếp theo sẽ đi sâu vào bài toán logarit rời rạc.
+
+% ===================================================================
+\section{Bài toán Logarit rời rạc}
+\label{sec:dlp}
+
+Mục này phát biểu bài toán logarit rời rạc (Discrete Logarithm Problem --- DLP), thảo luận tại sao DLP được tin tưởng là khó về mặt tính toán, và liên hệ với lý thuyết độ phức tạp.
 
 \subsection{Phát biểu bài toán}
-\label{section:1.2.1}
-\textit{[TODO: Cho nhóm cyclic $G = \langle g \rangle$, phần tử $h \in G$. Bài toán DLP là tìm $x$ sao cho $g^x = h$. Phát biểu chính thức và ví dụ minh họa.]}
+\label{subsec:dlp-statement}
 
+\subsubsection{Logarit thông thường và động cơ}
+
+Trong giải tích thực, phép lấy logarit $\log_g(\cdot)$ là dễ. Khi chuyển sang nhóm hữu hạn cyclic, định nghĩa logarit vẫn được giữ nguyên về mặt cấu trúc, nhưng tính \emph{dễ tính} thì biến mất hoàn toàn --- đây chính là điểm mấu chốt mà mật mã khai thác.
+
+\subsubsection{Phát biểu trong nhóm cyclic}
+
+\begin{definition}[Bài toán logarit rời rạc --- DLP]
+\label{def:dlp}
+Cho $(G, \cdot)$ là nhóm cyclic hữu hạn cấp $n$, sinh bởi $g$. Cho $y \in G$. Tìm $x \in \{0, 1, \ldots, n-1\}$ sao cho $g^x = y$. Số $x$ này ký hiệu là $x = \log_g y$.
+\end{definition}
+
+\begin{proposition}[Tính tồn tại và duy nhất]
+Vì $G = \langle g \rangle$ cyclic cấp $n$, mọi $y \in G$ có biểu diễn duy nhất $g^x$ với $x \in \{0, 1, \ldots, n-1\}$. Do đó logarit rời rạc luôn tồn tại và duy nhất.
+\end{proposition}
+
+\subsubsection{Phát biểu cụ thể trên \texorpdfstring{$\mathbb{Z}_p^*$}{Zp*}}
+
+\begin{quote}
+\textbf{DLP trên $\mathbb{Z}_p^*$.} Cho số nguyên tố $p$, phần tử nguyên thủy $g \in \mathbb{Z}_p^*$, và $y \in \mathbb{Z}_p^*$. Tìm $x \in \{0, 1, \ldots, p-2\}$ sao cho $g^x \equiv y \pmod{p}$.
+\end{quote}
+
+Đây chính là dạng DLP mà lược đồ chữ ký ElGamal dựa vào.
+
+\begin{example}[DLP với tham số nhỏ]
+Với $p = 11, g = 2$ (phần tử nguyên thủy theo Ví dụ~\ref{ex:primroot-11}), cho $y = 7$. Tra bảng lũy thừa: $2^7 \equiv 7 \pmod{11}$, nên $\log_2 7 = 7$ trong $\mathbb{Z}_{11}^*$. Khi $p \approx 2^{2048}$, không gian tìm kiếm lên tới $2^{2048}$ khả năng --- vượt xa mọi máy tính cổ điển.
+\end{example}
+
+\subsubsection{Tính chất một chiều}
+
+\begin{itemize}[leftmargin=*]
+	\item Tính theo chiều thuận $x \mapsto g^x \bmod p$ là \emph{dễ}: $O(\log^3 p)$ (Mục~\ref{subsec:modexp}).
+	\item Tính theo chiều ngược $y \mapsto \log_g y$ là \emph{khó}: chưa có thuật toán đa thức nào được biết.
+\end{itemize}
+
+% ===================================================================
 \subsection{Tại sao DLP khó}
-\label{section:1.2.2}
-\textit{[TODO: Phân tích tại sao tính toán tiến (lũy thừa) dễ nhưng chiều ngược (logarit) lại khó về mặt tính toán. Liên hệ với giả thuyết bảo mật (computational hardness assumption).]}
+\label{subsec:dlp-hardness}
 
+\subsubsection{Không có thuật toán đa thức được biết}
+
+Tính đến nay, \textbf{không có thuật toán đa thức nào được biết để giải DLP trên $\mathbb{Z}_p^*$ tổng quát}. Các thuật toán tốt nhất:
+\begin{itemize}[leftmargin=*]
+	\item \emph{Tổng quát} (mọi nhóm cyclic): $O(\sqrt{p})$ --- Baby-step Giant-step, Pollard rho.
+	\item \emph{Riêng cho $\mathbb{Z}_p^*$} (khai thác cấu trúc số học): dưới hàm mũ $L_p[1/3, c]$ --- Index Calculus, Number Field Sieve.
+\end{itemize}
+Niềm tin vào độ khó của DLP đến từ lịch sử nghiên cứu hơn $50$ năm chưa có đột phá, sự chứng nhận của NSA/NIST, và tính phổ quát của bài toán trong nhiều lĩnh vực toán học.
+
+\subsubsection{Liên hệ với lý thuyết độ phức tạp}
+
+Phiên bản quyết định \textsc{DLP-Decision} (cho $(p, g, y, k)$, có $x \leq k$ sao cho $g^x \equiv y$?) nằm trong $\mathbf{NP} \cap \mathbf{coNP}$.
+
+\begin{proposition}
+\textsc{DLP-Decision} $\in \mathbf{NP} \cap \mathbf{coNP}$.
+\end{proposition}
+
+\begin{proof}[Phác thảo]
+\emph{Thuộc $\mathbf{NP}$:} Chứng nhận ``có'' là giá trị $x$ --- kiểm tra $g^x \equiv y \pmod{p}$ và $x \leq k$ trong thời gian đa thức.
+
+\emph{Thuộc $\mathbf{coNP}$:} Chứng nhận ``không'' là $x_0 = \log_g y$ thực, với $x_0 > k$ --- kiểm tra tương tự.
+\end{proof}
+
+\begin{remark}[Vị trí của DLP trong lý thuyết phức tạp]
+DLP \emph{chưa được chứng minh} thuộc $\mathbf{P}$ và cũng \emph{chưa được chứng minh} là $\mathbf{NP}$-khó (vì mọi bài toán $\mathbf{NP}$-khó trong $\mathbf{NP} \cap \mathbf{coNP}$ sẽ kéo theo $\mathbf{NP} = \mathbf{coNP}$). \emph{Độ khó của DLP là một giả thiết, không phải định lý} --- đây là bản chất của mọi hệ mã khóa công khai.
+\end{remark}
+
+\subsubsection{Liên hệ với các bài toán mật mã liên quan}
+
+\begin{description}[leftmargin=*]
+	\item[\textbf{DLP}.] Cho $(g, y)$, tìm $x = \log_g y$. Bài toán ``khó nhất'' trong họ.
+	\item[\textbf{CDH} (Computational Diffie--Hellman).] Cho $(g, g^a, g^b)$, tính $g^{ab}$.
+	\item[\textbf{DDH} (Decisional Diffie--Hellman).] Cho $(g, g^a, g^b, z)$, quyết định xem $z = g^{ab}$ hay $z$ ngẫu nhiên.
+\end{description}
+
+Ta có chuỗi rút gọn: $\text{Giải DLP} \implies \text{Giải CDH} \implies \text{Giải DDH}$. Lược đồ chữ ký ElGamal dựa trên DLP; trao đổi khóa Diffie--Hellman dựa trên CDH.
+
+\subsubsection{Ảnh hưởng của kích thước tham số}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{rll}
+\toprule
+\textbf{Bit của $p$} & \textbf{Đánh giá an toàn} & \textbf{Ghi chú} \\
+\midrule
+$512$  & Đã phá            & Chỉ dùng demo \\
+$1024$ & Không khuyến nghị & NIST deprecated từ 2013 \\
+$2048$ & Ngắn--trung hạn ($\sim 2030$) & Mức tối thiểu hiện hành \\
+$3072$ & Dài hạn           & Khuyến nghị mới của NIST \\
+$7680$ & Tương đương AES-256 & Hiếm dùng do tốc độ chậm \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{Đe dọa từ máy tính lượng tử}
+
+Năm $1994$, Peter Shor công bố thuật toán lượng tử giải DLP trong thời gian đa thức $O(\log^3 p)$. Các máy tính lượng tử thực tế hiện tại chưa đủ lớn để đe dọa, nhưng đây là động lực cho nghiên cứu \emph{mật mã hậu lượng tử} (post-quantum cryptography) dựa trên các bài toán khó mới như lattice problems, code-based, hash-based.
+
+% ===================================================================
 \subsection{Các thuật toán tấn công DLP đã biết}
-\label{section:1.2.3}
-\textit{[TODO: Giới thiệu các thuật toán: Baby-step Giant-step ($O(\sqrt{p})$), Pohlig-Hellman, Index Calculus. Nêu độ phức tạp và điều kiện áp dụng từng thuật toán.]}
+\label{subsec:dlp-attacks}
 
+\textit{[TODO: Giới thiệu các thuật toán: Baby-step Giant-step ($O(\sqrt{p})$), Pohlig--Hellman, Index Calculus. Nêu độ phức tạp và điều kiện áp dụng từng thuật toán.]}
+
+% ===================================================================
 \section{Tổng quan về chữ ký số}
 \label{section:1.3}
 
