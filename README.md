@@ -2,7 +2,7 @@
 
 Báo cáo Bài tập lớn về **Lược đồ chữ ký số ElGamal và ứng dụng xác thực tài liệu số**.
 
-Trường Đại học Bách Khoa Hà Nội — Khoa Toán - Tin (SoICT).
+Trường Đại học Bách Khoa Hà Nội — Khoa Toán - Tin (Fami).
 
 ---
 
