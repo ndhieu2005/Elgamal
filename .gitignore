@@ -1,0 +1,72 @@
+# ============================================================
+#  LaTeX build artifacts
+# ============================================================
+
+# Core auxiliary files
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.idx
+*.ind
+*.ilg
+
+# Biber / biblatex
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+
+# Glossaries
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+*.xdy
+*.glsdefs
+
+# latexmk
+*.fdb_latexmk
+*.fls
+
+# SyncTeX
+*.synctex.gz
+*.synctex(busy)
+
+# PDFLaTeX intermediate
+*.dvi
+*.ps
+*.nav
+*.snm
+*.vrb
+*.pre
+
+# Miscellaneous TeX temp files
+*.maf
+*.mtc*
+*.ptc
+*.xmpi
+
+# ============================================================
+#  Subfile artifacts — cover page compiled standalone
+# ============================================================
+report/Do_an_LaTEX_Based_by_SoICT/Bia.pdf
+
+# ============================================================
+#  OS / editor noise
+# ============================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/settings.json
+
+# ============================================================
+#  latexmk output folder (if -output-directory is used)
+# ============================================================
+build/
+out/

@@ -1,0 +1,60 @@
+\documentclass[../DoAn.tex]{subfiles}
+\begin{document}
+
+\section{Khảo sát thực tế}
+\label{section:2.1}
+
+\subsection{Khảo sát nhu cầu xác thực văn bản điện tử}
+\label{section:2.1.1}
+\textit{[TODO: Phân tích thực trạng lưu hành văn bản điện tử (hợp đồng, công văn, văn bằng). Nêu các vấn đề bảo mật thực tế: giả mạo chữ ký, tấn công man-in-the-middle, v.v.]}
+
+\subsection{Khảo sát các lỗ hổng thực tế liên quan}
+\label{section:2.1.2}
+\textit{[TODO: Liệt kê và phân tích các lỗ hổng đã được ghi nhận trong các hệ thống xác thực văn bản hiện tại. Có thể tham khảo CVE hoặc các nghiên cứu bảo mật gần đây.]}
+
+\section{Phân tích từ khảo sát}
+\label{section:2.2}
+
+\subsection{Thuật toán chữ ký số ElGamal --- phân tích chi tiết}
+\label{section:2.2.1}
+\textit{[TODO: Trình bày đầy đủ 3 bước: sinh khóa (chọn $p$, $g$, $x$, tính $y = g^x \bmod p$), ký (chọn $k$ ngẫu nhiên, tính $r$, $s$), xác minh (kiểm tra phương trình xác minh). Kèm ví dụ số cụ thể.]}
+
+\subsection{Phân tích độ an toàn}
+\label{section:2.2.2}
+\textit{[TODO: Phân tích độ an toàn dựa trên độ khó của DLP. Các điều kiện cần thiết để đảm bảo an toàn: kích thước $p$, tính ngẫu nhiên của $k$, v.v. Các tấn công đã biết và cách phòng ngừa.]}
+
+\subsection{So sánh ElGamal, DSA và RSA}
+\label{section:2.2.3}
+\textit{[TODO: So sánh theo các tiêu chí: cơ sở toán học, kích thước khóa và chữ ký, tốc độ ký/xác minh, mức độ an toàn, tình trạng chuẩn hóa. Có thể trình bày dưới dạng bảng.]}
+
+\section{Thiết kế mô hình/hệ thống}
+\label{section:2.3}
+
+\subsection{Kiến trúc hệ thống xác thực văn bản}
+\label{section:2.3.1}
+\textit{[TODO: Mô tả kiến trúc tổng thể: các thành phần (client ký, server xác minh, kho lưu trữ khóa công khai), luồng dữ liệu, giao thức trao đổi.]}
+
+\subsection{Thiết kế module phần mềm}
+\label{section:2.3.2}
+\textit{[TODO: Thiết kế chi tiết các module: sinh khóa, ký tài liệu, xác minh chữ ký, quản lý khóa. Class diagram hoặc component diagram nếu có.]}
+
+\subsection{Yêu cầu bảo mật trong triển khai}
+\label{section:2.3.3}
+\textit{[TODO: Các yêu cầu bảo mật khi triển khai thực tế: quản lý khóa bí mật, sinh số ngẫu nhiên an toàn (CSPRNG), bảo vệ khóa riêng tư, kiểm tra tham số đầu vào.]}
+
+\section{Thực nghiệm, mô phỏng, demo và đánh giá}
+\label{section:2.4}
+
+\subsection{Môi trường thực nghiệm}
+\label{section:2.4.1}
+\textit{[TODO: Mô tả môi trường chạy thực nghiệm: ngôn ngữ lập trình, thư viện mật mã sử dụng, cấu hình phần cứng/phần mềm, bộ dữ liệu thử nghiệm.]}
+
+\subsection{Kịch bản thực nghiệm}
+\label{section:2.4.2}
+\textit{[TODO: Mô tả các kịch bản kiểm thử: ký và xác minh thành công, phát hiện tài liệu bị sửa đổi, thử nghiệm với các kích thước khóa khác nhau, v.v.]}
+
+\subsection{Đánh giá kết quả}
+\label{section:2.4.3}
+\textit{[TODO: Trình bày kết quả thực nghiệm qua bảng số liệu hoặc biểu đồ: thời gian ký, thời gian xác minh, tỉ lệ phát hiện tấn công. Đánh giá so với mục tiêu đề ra.]}
+
+\end{document}

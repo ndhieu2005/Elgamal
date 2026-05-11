@@ -1,0 +1,237 @@
+% =================== CÀI ĐẶT CHUNG ===================
+\documentclass[a4paper, twoside]{report}
+%\documentclass[a4paper, 13pt, twoside]{extreport} % Bằng một cách thần kỳ nào đấy, thuật toán co giãn của lệnh này lại nhỏ hơn lệnh changefontsizes 
+% (*) 'a4paper': Quy định khổ giấy A4.
+% (*) '13pt': Cỡ chữ cơ bản cho toàn văn bản là 13pt.
+% (*) 'twoside': Định dạng tài liệu để in hai mặt, lề trái và lề phải của trang chẵn và lẻ sẽ khác nhau (inside/outside margins).
+\usepackage{scrextend} % Cung cấp thêm các lệnh mở rộng cho lớp tài liệu chuẩn.
+\changefontsizes{13pt} % Lệnh từ gói scrextend, áp dụng cỡ font chữ là 13 cho toàn văn bản.
+
+
+% =================== GÓI LỆNH BỐ CỤC & TRANG ===================
+\usepackage[top=2cm, bottom=2cm, left=3.5cm, right=2.5cm]{geometry} %Thiết lập lề trang (trên, dưới, trái, phải).
+\usepackage{fancyhdr} % Tùy biến header và footer
+\fancypagestyle{plain}{%
+	\fancyhf{} % Xóa toàn bộ nội dung, định dạng của header và footer.
+	\fancyfoot[RO,RE]{\thepage} % (*) Đặt số trang ở góc phải cho cả trang lẻ (Right Odd) và trang chẵn (Right Even).
+	\renewcommand{\headrulewidth}{0pt} % Điều chỉnh độ dày của đương kẻ ngang header, ở đây mục đích là bỏ đường kẻ ngang ở header (Độ dày 0pt)
+	\renewcommand{\footrulewidth}{0pt}} % Điều chỉnh độ dày của đương kẻ ngang footer, ở đây mục đích là bỏ đường kẻ ngang ở footer (Độ dày 0pt)
+% Lệnh trên để tùy chỉnh lại định dạng trang 'plain' (thường dùng cho trang đầu chương).
+\setlength{\headheight}{15pt} % Đặt chiều cao cho vùng header để tránh lỗi cảnh báo của fancyhdr.
+
+\usepackage{pdflscape} % Hỗ trợ trang ngang, giúp đưa các bảng có kích thước đặt theo chiều ngang giấy
+\usepackage{setspace} % Hỗ trợ giãn dòng
+\setstretch{1.1} % Giãn dòng 1.1
+%\onehalfspacing % Giãn dòng 1.5, theo đồ án SoICT là giãn 1.5, còn theo file quy chế chính thức ctt là giãn 1.1, sinh viên tùy chỉnh nếu muốn rộng hơn.
+\usepackage{afterpage} % Hỗ trợ can thiệp ngắt trang, ví dụ để chèn một trang trống sau trang hiện tại.
+
+% =================== GÓI LỆNH HÌNH ẢNH, BẢNG, CHÚ THÍCH ===================
+\usepackage{graphicx} %Cho phép chèn hình ảnh với lệnh \includegraphics.
+\graphicspath{{figures/}{../figures/}} % Thư mục chứa các hình ảnh, tùy chọn đường dẫn dựa vào người dùng
+\usepackage{array} % Tạo bảng, mở rộng khả năng tùy biến các cột trong môi trường bảng (tabular).
+\usepackage{multirow} % Hợp nhất các ô trong bảng.
+\usepackage{subcaption} % Hỗ trợ tạo các hình ảnh/bảng con trong cùng một môi trường figure/table.
+\usepackage{float} % Cung cấp tùy chọn [H] để "ghim" đối tượng (hình, bảng) tại đúng vị trí khai báo.
+\usepackage[font=small,labelfont=bf]{caption} % Tùy chỉnh định dạng của chú thích (caption): 'font=small' cho chữ nhỏ hơn, 'labelfont=bf' in đậm nhãn (ví dụ: "Hình 1.1").
+\usepackage{capt-of} % Cho phép tạo chú thích (caption) cho các đối tượng nằm ngoài môi trường float (như figure, table).
+\captionsetup[table]{position=top} % Đảm bảo chú thích của bảng luôn nằm ở phía trên bảng.
+\counterwithin{figure}{chapter} % Đánh số hình ảnh theo số chương. Ví dụ: Hình 1.1, 1.2,..
+\counterwithin{table}{chapter}  % Đánh số bảng biểu theo số chương. Ví dụ: Bảng 1.1, 1.2,...
+
+
+% =================== GÓI LỆNH TOÁN HỌC & THUẬT TOÁN ===================
+\usepackage{amsmath} % Hỗ trợ nhiều môi trường và lệnh để soạn thảo công thức toán học phức tạp.
+\usepackage{amssymb} % Bổ sung thêm kí hiệu về toán học (ví dụ: \mathbb).
+\usepackage{amsthm} % Cho phép tạo môi trường định lý, ví dụ
+\theoremstyle{definition} %Định dạng: Tiêu đề in đậm, nội dung in đứng, dành cho các phần mang tính giải thích, không phải chứng minh, như Định nghĩa (Definition), Điều kiện (Condition), và Ví dụ (Example). Có thể tùy chỉnh thành \theoremstyle{plain}, \theoremstyle{remark}. Tuy nhiên sử dụng trong quy cách đồ án sử dụng definition.
+\newtheorem{example}{Ví dụ}[chapter] % Tạo môi trường "Ví dụ", được đánh số theo chương.
+\counterwithin{equation}{chapter} % Đánh số phương trình theo chương
+\renewcommand{\theequation}{PT \thechapter.\arabic{equation}} % Đổi định dạng số phương trình (ví dụ: "PT 1.1").
+\usepackage[ruled,vlined]{algorithm2e} % Hỗ trợ viết các giải thuật, mã giả (pseudocode).
+
+% =================== GÓI LỆNH NGÔN NGỮ & FONT ===================
+\usepackage[utf8]{vietnam}  % Kích hoạt bộ gõ tiếng Việt và các quy tắc soạn thảo tiếng Việt.
+%\usepackage{newtxtext, newtxmath} % Thay thế cho \usepackage{times}, tuy nhiên không nên xài khi download sử dụng offline/local do gói lệnh này dễ không tương thích.
+\usepackage{times} % Sử dụng font chữ Times New Roman cho văn bản.
+\usepackage{indentfirst} % Thụt đầu dòng ở dòng đầu tiên trong đoạn
+
+% =================== GÓI LỆNH MỤC LỤC & TIÊU ĐỀ ===================
+\usepackage{titlesec} % Giúp tùy chỉnh sâu định dạng của các tiêu đề (chương, mục,...).
+\usepackage{titletoc} % Cung cấp các lệnh để tùy chỉnh định dạng của bảng mục lục (Table of Contents).
+\setcounter{secnumdepth}{3} % Cho phép đánh số subsubsection trong báo cáo (report).
+% \setcounter{tocdepth}{3} % Cho phép chèn subsubsection vào bảng mục lục
+
+% =================== GÓI LỆNH TÀI LIỆU THAM KHẢO ===================
+\usepackage[backend=biber, style=ieee]{biblatex} % Quản lý và trích dẫn tài liệu tham khảo. 'backend=biber' là engine xử lý mạnh mẽ, 'style=ieee' là định dạng trích dẫn kiểu số [1], [2].
+\addbibresource{Danh_sach_tai_lieu_tham_khao.bib} % Liên kết tới file .bib chứa danh sách tài liệu tham khảo.
+\DefineBibliographyStrings{english}{
+	bibliography = {TÀI LIỆU THAM KHẢO},
+} % Việt hóa tiêu đề của danh mục tài liệu tham khảo.
+\usepackage{appendix} % Hỗ trợ tạo và quản lý phần Phụ lục.
+\renewcommand\appendixname{PHỤ LỤC} % Việt hóa tiêu đề trang bắt đầu phụ lục.
+\renewcommand\appendixpagename{PHỤ LỤC} % Việt hóa tên chương phụ lục trong header.
+\renewcommand\appendixtocname{PHỤ LỤC} % Việt hóa tên chương phụ lục trong mục lục.
+
+% =================== GÓI CHO NỘI DUNG CHUYÊN DỤNG (CODE, GLOSSARY,...) ===================
+\usepackage{listings} % Dùng để chèn các đoạn mã nguồn (source code) vào tài liệu.
+\include{lstlisting} % Gọi file lstlisting.tex chứa các thiết lập định dạng riêng cho gói listings.
+\usepackage{xurl} % Hỗ trợ ngắt dòng các đường link URL dài một cách thông minh, tránh tràn lề.
+\usepackage[nonumberlist, nopostdot, nogroupskip, acronym]{glossaries}  % Tạo danh sách các từ viết tắt và thuật ngữ.
+\usepackage{glossary-superragged} % Style bổ sung cho gói glossaries.
+\setglossarystyle{superraggedheaderborder} % Thiết lập style hiển thị cho danh sách thuật ngữ.
+\usepackage{fancybox} % Để tạo các loại khung hộp trang trí cho văn bản.
+
+% =================== GÓI LỆNH TIỆN ÍCH KHÁC ===================
+\usepackage{eso-pic} % Đặt nội dung lên nền trang (dùng cho trang bìa)
+\usepackage{subfiles} % Hỗ trợ biên dịch riêng lẻ từng file con, chèn các file nhỏ, giúp quản lý và chia các chapter ra nhiều file hơn.
+\usepackage{enumitem} % Tùy chỉnh sâu các danh sách (itemize, enumerate).
+\usepackage{hyperref} % Tạo các liên kết siêu văn bản trong tài liệu PDF (ví dụ: từ mục lục tới chương, từ trích dẫn tới tài liệu tham khảo).
+\title{\bf ĐỒ ÁN TỐT NGHIỆP} % Khai báo tiêu đề cho tài liệu.
+\author{NGUYỄN VĂN ABC} % Khai báo tác giả cho tài liệu.
+\hypersetup{pdfborder={0 0 0}, pdfusetitle} % Tùy chỉnh hyperref: 'pdfborder' xóa khung viền quanh các link, 'pdfusetitle' tự động lấy tiêu đề đã khai báo ở trên làm tiêu đề file PDF.
+\usepackage[all]{hypcap} % Cho phép các tham chiếu siêu liên kết trỏ đến đầu của hình ảnh/bảng biểu, thay vì trỏ đến chú thích (caption) ở dưới.
+
+% ========== ĐỊNH NGHĨA LẠI CÁC TIÊU ĐỀ (Chương, Mục) ==========
+\titleformat{\chapter}[hang]{\centering\bfseries}{CHƯƠNG \thechapter. }{0pt}{}
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt}
+
+\titleformat{\section}[hang]{\bfseries}{\thesection}{1em}{}
+\titlespacing*{\section}{0pt}{1.5ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\titleformat{\subsection}[hang]{\bfseries}{\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{1.5ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\titleformat{\subsubsection}[hang]{\itshape}{\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{1.5ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+
+% ========== KHOẢNG CÁCH ĐOẠN & CÁC THIẾT LẬP KHÁC ==========
+\setlength{\parskip}{6pt} %Khoảng cách xuống dòng theo đồ án SoICT gốc
+%\setlength{\parskip}{3pt} %Khoảng cách xuống dòng theo file đồ án chính thức của đại học (Spacing Before): 3pt, tuy nhiên file đồ án không quy định xuống dòng chính thức, sinh viên tự tùy chỉnh 3 hoặc 6pt cho phù hợp
+\setlength{\parindent}{15pt} %Lùi đầu dòng 15pt.
+
+
+\usepackage{outlines}
+
+%\usepackage{latexsym} % Các kí hiệu toán học
+%\usepackage{amsbsy} % Hỗ trợ các kí hiệu in đậm
+%\usepackage{times} % Chọn font Time New Romans
+%\usepackage{chngcntr} % Dùng để thiết lập lại cách đánh số caption,..
+%\usepackage{parskip}
+%\usepackage{tocbasic}
+%\usepackage{blindtext}
+
+\begin{document}
+	
+	\subfile{Bia} % Phần bìa
+	\pagestyle{plain} % Chỉ hiển thị số trang ở cuối trang
+	
+	\newpage
+	\pagenumbering{gobble}
+	\subfile{Chuong/0_2_Loi_cam_on.tex}
+	
+	\newpage
+	\subfile{Chuong/0_3_Tom_tat_noi_dung.tex}
+	
+	% ===================================================
+	% --- CÁC TRANG DANH MỤC ---
+	% Mục lục, Danh mục hình vẽ/bảng biểu vẫn dùng số La Mã
+	\newpage
+	\renewcommand*\contentsname{MỤC LỤC}
+	
+	
+	\titlecontents{chapter}
+	[0.0cm]             % left margin
+	{\bfseries\vspace{0.3cm}}                  % above code
+	{{\bfseries{\scshape}
+			CHƯƠNG \thecontentslabel.\ }}
+	% numbered format
+	{}         % unnumbered format
+	{\titlerule*[0.3pc]{.}\contentspage}         % filler-page-format, e.g dots
+	
+	
+	\titlecontents{section}
+	[0.0cm]             % left margin
+	{\vspace{0.3cm}}                  % above code
+	{\thecontentslabel \ } % numbered format
+	{}         % unnumbered format
+	{\titlerule*[0.3pc]{.}\contentspage}         % filler-page-format, e.g dots
+	
+	\titlecontents{subsection}
+	[1.0cm]             % left margin
+	{\vspace{0.3cm}}                  % above code
+	{\thecontentslabel \ } % numbered format
+	{}         % unnumbered format
+	{\titlerule*[0.3pc]{.}\contentspage}         % filler-page-format, e.g dots
+	
+	\tableofcontents
+	\thispagestyle{empty}
+	\cleardoublepage
+	
+	%Tạo danh mục hình vẽ.
+	\newpage
+	\renewcommand{\listfigurename}{DANH MỤC HÌNH VẼ}
+	{\let\oldnumberline\numberline
+		\renewcommand{\numberline}{Hình~\oldnumberline}
+		\listoffigures} 
+	% \phantomsection\addcontentsline{toc}{section}{\numberline {} DANH MỤC HÌNH VẼ}
+		
+	
+	%Tạo danh mục bảng biểu.
+	\renewcommand{\listtablename}{DANH MỤC BẢNG BIỂU}
+	{\let\oldnumberline\numberline
+		\renewcommand{\numberline}{Bảng~\oldnumberline}
+		\listoftables}
+	% \phantomsection\addcontentsline{toc}{section}{\numberline {} DANH MỤC BẢNG BIỂU}
+	
+	
+	%Mục dưới đây dành cho danh mục thuật ngữ và viết tắt, chỉ sử dụng khi có từ viết tắt
+	%\glsaddall 
+	%\renewcommand*{\glossaryname}{Danh sách thuật ngữ}
+	%\renewcommand*{\acronymname}{DANH MỤC THUẬT NGỮ VÀ TỪ VIẾT TẮT}
+	%\renewcommand*{\entryname}{Thuật ngữ}
+	%\renewcommand*{\descriptionname}{Ý nghĩa}
+	%\printnoidxglossaries
+	%\phantomsection\addcontentsline{toc}{section}{\numberline {} DANH MỤC THUẬT NGỮ VÀ TỪ VIẾT TẮT}
+	
+	% \newpage
+	%\subfile{chapters/0_5_Danh_muc_viet_tat.tex}
+	
+	% \newpage
+	% \subfile{chapters/0_6_Thuat_ngu.tex}
+	% ===================================================
+	
+	%\mainmatter % Lệnh này tự động chuyển sang số Ả Rập (1, 2, 3...) và reset bộ đếm
+	
+	\newpage
+	\pagenumbering{arabic}
+	
+	\pagestyle{fancy}
+	\fancyhf{}
+	\fancyhead[RE, LO]{\leftmark}
+	%\fancyhead[LE]{\rightmark}
+	\fancyfoot[RE, LO]{\thepage}
+	\renewcommand{\headrulewidth}{0.4pt}
+
+	\chapter{KIẾN THỨC CƠ SỞ}
+	\label{chapter:KienThucCoSo}
+	\subfile{Chuong/1_Kien_thuc_co_so}
+
+	\newpage
+	\chapter{ỨNG DỤNG LƯỢC ĐỒ CHỮ KÝ SỐ ELGAMAL TRONG XÁC THỰC VĂN BẢN ĐIỆN TỬ}
+	\label{chapter:UngDungElGamal}
+	\subfile{Chuong/2_Ung_dung_ElGamal}
+
+	\newpage
+	\chapter{KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN}
+	\label{chapter:KetLuan}
+	\subfile{Chuong/6_Ket_luan}
+	
+
+	% ===================================================
+	
+	\printbibliography[heading=bibintoc]
+
+\end{document}
+
+
